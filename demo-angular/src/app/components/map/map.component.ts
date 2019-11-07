@@ -219,7 +219,7 @@ export class MapComponent implements OnInit, OnDestroy {
   unRegisterEventHandlers() {
 
     this.events.unsubscribe( 'platform:pause' );
-    this.events.unsubscribe( 'platform:exit' );
+    this.events.unsubscribe( 'platform:exit');
     this.events.unsubscribe( 'platform:resume' );
     this.events.unsubscribe( 'destroyMap' );
 
@@ -230,7 +230,7 @@ export class MapComponent implements OnInit, OnDestroy {
   // ------------------------------------------------------------
 
   ngOnInit() {
-    console.log( "MapComponent::ngOnInit(): with style '" + this.style + "' and access token '" + this.access_token + "'" );
+    console.log("MapComponent::ngOnInit(): with style '" + this.style + "' and access token '" + this.access_token + "'");
   }
 
   // -------------------------------------------------------------------------------
@@ -247,7 +247,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
     if ( ! this.isReady ) {
 
-      console.log( "MapComponent:onMapReady(): First call to onMapReady()" );
+      console.log("MapComponent:onMapReady(): First call to onMapReady()" );
 
       this.isReady = true;
 
@@ -377,19 +377,19 @@ export class MapComponent implements OnInit, OnDestroy {
 
   async saveMapState() {
 
-    let center = await this.mapboxView.getCenter();     // .catch( (error) => { console.error( "MapComponent:saveMapState(): unable to get map center" ); } );
-    let zoom = await this.mapboxView.getZoomLevel();    // .catch( (error) => { console.error( "MapComponent:saveMapState(): unable to get map zoom" ); } );
-    let viewport = await this.mapboxView.getViewport(); // .catch( (error) => { console.error( "MapComponent:saveMapState(): unable to get map viewport" ); } );
+    const center = await this.mapboxView.getCenter();     // .catch( (error) => { console.error( "MapComponent:saveMapState(): unable to get map center" ); } );
+    const zoom = await this.mapboxView.getZoomLevel();    // .catch( (error) => { console.error( "MapComponent:saveMapState(): unable to get map zoom" ); } );
+    const viewport = await this.mapboxView.getViewport(); // .catch( (error) => { console.error( "MapComponent:saveMapState(): unable to get map viewport" ); } );
 
-    let settings : any = {
-      center: center,
-      zoom: zoom,
-      viewport: viewport
+    const settings : any = {
+      center,
+      zoom,
+      viewport
     };
 
     console.log( "MapComponent:saveMapState(): got map settings:", settings );
 
-    await this.settingsService.set( 'mapSettings', settings );
+    await this.settingsService.set( "mapSettings", settings );
 
   }
 
@@ -403,7 +403,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
   async restoreMapState() {
 
-    let settings = await this.settingsService.get( 'mapSettings' );
+    const settings = await this.settingsService.get( "mapSettings" );
 
     console.log( "MapComponent:restoreMapState(): got settings :", settings );
 
@@ -464,7 +464,7 @@ export class MapComponent implements OnInit, OnDestroy {
     return dialogs.alert({
       title: "Location Denied",
       message: "Unable to get current location because the location permission has not been granted.",
-      okButtonText: "OK",
+      okButtonText: "OK"
     });
 
   }
@@ -477,9 +477,9 @@ export class MapComponent implements OnInit, OnDestroy {
   * Move the map to center on the given coordinates.
   */
 
-  centerOn( location: any ) {
+  centerOn(location: any) {
 
-    console.log( "MapComponent::centerOn(): top" );
+    console.log("MapComponent::centerOn(): top");
 
     this.mapboxView.setCenter({
       lat: location.latitude,
@@ -495,7 +495,7 @@ export class MapComponent implements OnInit, OnDestroy {
   * Set the zoom to the specified value
   */
 
-  zoom( zoomLevel: number ) {
+  zoom(zoomLevel: number) {
   }
 
   // ---------------------------------------------------------------
@@ -504,7 +504,7 @@ export class MapComponent implements OnInit, OnDestroy {
   * Attribution Control
   */
 
-  addAttributionControl( position: string ) {
+  addAttributionControl(position: string) {
   }
 
   // ---------------------------------------------------------------
@@ -513,57 +513,57 @@ export class MapComponent implements OnInit, OnDestroy {
   * Zoom control
   */
 
-  addZoomControl( position: string ) {
+  addZoomControl(position: string) {
   }
 
   // ---------------------------------------------------------------------------------------
 
   addTestCircle() {
 
-    console.log( "MapComponent:addTestCircle(): Adding test circle" );
+    console.log("MapComponent:addTestCircle(): Adding test circle");
 
-    const metersToPixelsAtMaxZoom = ( radius, latitude ) => radius / 0.075 / Math.cos( latitude * Math.PI / 180);
+    const metersToPixelsAtMaxZoom = (radius, latitude) => radius / 0.075 / Math.cos(latitude * Math.PI / 180);
 
-    const pixels = metersToPixelsAtMaxZoom( 500,  39.007846 );
+    const pixels = metersToPixelsAtMaxZoom(500,  39.007846);
 
-    let style = {
-      "id": 'testCircle',
-      "type": 'circle',
+    const style = {
+      id: "testCircle",
+      type: "circle",
       "circle-radius": 250,
-      "source": {
-        "type": 'geojson',
-        "data": {
-          "type": "Feature",
-          "geometry": {
-            "type": "Point",
-            "coordinates": [ -76.947041, 39.007846 ]
+      source: {
+        type: "geojson",
+        data: {
+          type: "Feature",
+          geometry: {
+            type: "Point",
+            coordinates: [ -76.947041, 39.007846 ]
           }
         }
       },
-      "paint": {
+      paint: {
         "circle-radius": {
-          "stops": [
+          stops: [
             [0, 0],
             [20, pixels ]
           ],
-          "base": 2
+          base: 2
         },
-        'circle-opacity': 0.05,
-        'circle-color': '#ed6498',
-        'circle-stroke-width': 2,
-        'circle-stroke-color': '#ed6498'
+        "circle-opacity": 0.05,
+        "circle-color": "#ed6498",
+        "circle-stroke-width": 2,
+        "circle-stroke-color": "#ed6498"
       }
     };
 
     this.mapboxView.addLayer(
       style
-    ).catch( ( error ) => {
-      console.error("MapComponent:addTestCircle(): addTestCircle threw an error:", error );
+    ).catch((error) => {
+      console.error("MapComponent:addTestCircle(): addTestCircle threw an error:", error);
     });
 
-    this.mapboxView.onMapEvent( 'click', 'testCircle', ( point ) => {
+    this.mapboxView.onMapEvent("click", "testCircle", (point) => {
 
-      console.log( "MapComponent:addTestCircle(): circle clicked" );
+      console.log("MapComponent:addTestCircle(): circle clicked");
 
       // mandatory
 
