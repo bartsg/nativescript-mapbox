@@ -2006,10 +2006,10 @@ export class Mapbox extends MapboxCommon implements MapboxApi {
   public updateMarkerResource(markerId: number, resource: string, nativeMap?: any): Promise<any> {
     return new Promise((resolve, reject) => {
       try {
-        this._updateMarkerIcon(markerId, resource, nativeMap);
+        this._updateMarkerResource(markerId, resource, nativeMap);
         resolve();
       } catch (ex) {
-        console.error(`Error in mapbox.updateMarkerIcon: ${ex}`);
+        console.error(`Error in mapbox.updateMarkerResource: ${ex}`);
         reject(ex);
       }
     });
@@ -3871,7 +3871,7 @@ export class Mapbox extends MapboxCommon implements MapboxApi {
 
   // -------------------------------------------------------------
 
-  _updateMarkerIcon(markerId, newResource, nativeMap?): void {
+  _updateMarkerResource(markerId, newResource, nativeMap?): void {
     const theMap: any = nativeMap || this._mapboxViewInstance;
     const markerToUpdate: MapboxMarker = this._markers.find((marker: MapboxMarker) => marker.id && marker.id === markerId);
     if (!theMap || !markerToUpdate) {

@@ -1798,8 +1798,10 @@ export class Mapbox extends MapboxCommon implements MapboxApi {
 
           console.log( "Mapbox:setOnCameraIdleListener(): region changed." );
 
-          resolve();
+          listener();
         });
+
+        resolve();
       } catch (ex) {
         console.log("Error in mapbox.regionDidChangeAnimated: " + ex);
         reject(ex);
