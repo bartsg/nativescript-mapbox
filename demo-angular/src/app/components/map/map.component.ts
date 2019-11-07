@@ -1,13 +1,13 @@
 /**
 * Angular Map Component Implementation
-* 
+*
 * Implements a map directive for NativeScript Angular
 *
 * @author Yermo Lamers, Flying Brick Software, LLC https://github.com/Yermo
 */
 
 import {
-  Component, 
+  Component,
   OnInit,
   OnDestroy,
   ViewChild,
@@ -51,7 +51,7 @@ registerElement( "Mapbox", () => require("nativescript-mapbox").MapboxView);
 * <map id="<uniqid>"
 *   access_token="mapbox access token"
 *   style="mapbox style"
-*   fallbackLatitude="" 
+*   fallbackLatitude=""
 *   fallbackLongitude="">
 *   <location-map-button ></location-map-button>
 *   <track></track>
@@ -141,10 +141,10 @@ export class MapComponent implements OnInit, OnDestroy {
 
   @Input() fallbackLatitude : string;
   @Input() fallbackLongitude: string;
-  
+
   // whether or not to show the map
   //
-  // When navigating away from the page we destroy the map by 
+  // When navigating away from the page we destroy the map by
   // setting this to false (see the *ngIf on the StackLayout tag in the template above).
 
   shown : boolean = true;
@@ -161,7 +161,7 @@ export class MapComponent implements OnInit, OnDestroy {
   * @link https://github.com/EddyVerbruggen/nativescript-mapbox/issues/271
   */
 
-  constructor( 
+  constructor(
     public ngZone: NgZone,
     public viewContainerRef: ViewContainerRef,
 
@@ -213,7 +213,7 @@ export class MapComponent implements OnInit, OnDestroy {
   // -------------------------------------------------------------
 
   /**
-  * unregister event handlers 
+  * unregister event handlers
   */
 
   unRegisterEventHandlers() {
@@ -238,7 +238,7 @@ export class MapComponent implements OnInit, OnDestroy {
   /**
   * when the map is ready
   *
-  * The onMapReady() callback is invoked when the MapboxView class instance is ready. 
+  * The onMapReady() callback is invoked when the MapboxView class instance is ready.
   */
 
   onMapReady(args): void {
@@ -246,7 +246,7 @@ export class MapComponent implements OnInit, OnDestroy {
     console.log( "MapComponent:onMapReady(): top" );
 
     if ( ! this.isReady ) {
- 
+
       console.log( "MapComponent:onMapReady(): First call to onMapReady()" );
 
       this.isReady = true;
@@ -265,6 +265,7 @@ export class MapComponent implements OnInit, OnDestroy {
     // this is an instance of class MapboxView
 
     this.mapboxView = args.map;
+    this.mapboxView.setOnCameraIdleListener(() => console.log("***** CAMERA CHANGED EVENT! *****"));
 
     this.declareReady();
 
@@ -370,9 +371,9 @@ export class MapComponent implements OnInit, OnDestroy {
   /**
   * Save map settings
   *
-  * To support creating and destroying the map as necessary to work around issues with 
-  * the Mapbox Android SDK, we have to save the settings of the map so we can restore it 
-  * to the same state as it was when the app was paused. 
+  * To support creating and destroying the map as necessary to work around issues with
+  * the Mapbox Android SDK, we have to save the settings of the map so we can restore it
+  * to the same state as it was when the app was paused.
   */
 
   async saveMapState() {
@@ -452,13 +453,13 @@ export class MapComponent implements OnInit, OnDestroy {
   * @todo FIXME: This callback apparently does not work when the location is first being granted.
   */
 
-  onLocationPermissionGranted() { 
+  onLocationPermissionGranted() {
     console.log( "MapComponent:onLocationPermissionGranted(): callback" );
   }
 
   // --------------------------------------
 
-  onLocationPermissionDenied() { 
+  onLocationPermissionDenied() {
     console.log( "MapComponent:onLocationPermissionDenied(): callback" );
 
     return dialogs.alert({
@@ -474,7 +475,7 @@ export class MapComponent implements OnInit, OnDestroy {
   /**
   * Center the map on a location
   *
-  * Move the map to center on the given coordinates. 
+  * Move the map to center on the given coordinates.
   */
 
   centerOn( location: any ) {
@@ -522,9 +523,9 @@ export class MapComponent implements OnInit, OnDestroy {
 
     console.log( "MapComponent:addTestCircle(): Adding test circle" );
 
-    const metersToPixelsAtMaxZoom = ( radius, latitude ) => radius / 0.075 / Math.cos( latitude * Math.PI / 180);    
+    const metersToPixelsAtMaxZoom = ( radius, latitude ) => radius / 0.075 / Math.cos( latitude * Math.PI / 180);
 
-    const pixels = metersToPixelsAtMaxZoom( 500,  39.007846 ); 
+    const pixels = metersToPixelsAtMaxZoom( 500,  39.007846 );
 
     let style = {
       "id": 'testCircle',
@@ -539,7 +540,7 @@ export class MapComponent implements OnInit, OnDestroy {
             "coordinates": [ -76.947041, 39.007846 ]
           }
         }
-      }, 
+      },
       "paint": {
         "circle-radius": {
           "stops": [
@@ -552,10 +553,10 @@ export class MapComponent implements OnInit, OnDestroy {
         'circle-color': '#ed6498',
         'circle-stroke-width': 2,
         'circle-stroke-color': '#ed6498'
-      } 
+      }
     };
 
-    this.mapboxView.addLayer( 
+    this.mapboxView.addLayer(
       style
     ).catch( ( error ) => {
       console.error("MapComponent:addTestCircle(): addTestCircle threw an error:", error );
