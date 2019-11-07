@@ -488,6 +488,8 @@ export interface MapboxApi {
 
   removeMarkers(options?: any, nativeMap?: any): Promise<any>;
 
+  updateMarkerResource(id: number, res: string, nativeMap?: any): Promise<any>;
+
   setCenter(options: SetCenterOptions, nativeMap?: any): Promise<any>;
 
   getCenter(nativeMap?: any): Promise<LatLng>;
@@ -643,6 +645,8 @@ export interface MapboxViewApi {
 
   removeMarkers(options?: any): Promise<any>;
 
+  updateMarkerResource(id: number, res: string): Promise<any>;
+
   queryRenderedFeatures(options: QueryRenderedFeaturesOptions): Promise<Array<Feature>>;
 
   setOnMapClickListener(listener: (data: LatLng) => void): Promise<any>;
@@ -783,6 +787,12 @@ export abstract class MapboxViewCommonBase extends ContentView implements Mapbox
 
   removeMarkers(options?: any): Promise<any> {
     return this.mapbox.removeMarkers(options, this.getNativeMapView());
+  }
+
+  // -----------------------------------------------------------------
+
+  updateMarkerResource(id: number, res: string): Promise<any> {
+    return this.mapbox.updateMarkerResource(id, res, this.getNativeMapView());
   }
 
   // -----------------------------------------------------------------

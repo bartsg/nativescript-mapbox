@@ -1061,6 +1061,30 @@ export class Mapbox extends MapboxCommon implements MapboxApi {
     });
   }
 
+  updateMarkerResource(markerId: number, newResource: string, nativeMap?: any): Promise<any> {
+    return new Promise((resolve, reject) => {
+      try {
+        const theMap: MGLMapView = nativeMap || _mapbox.mapView;
+        const markerToUpdate: MapboxMarker = _markers.find((marker: MapboxMarker) => marker.id && marker.id === markerId);
+
+        if (markerToUpdate) {
+          theMap.removeAnnotation(markerToUpdate.ios);
+          // Clear icon settings in marker and re-add it!
+          (markerToUpdate as any).iconDownloaded = null;
+          (markerToUpdate as any).reuseIdentifier = null;
+          markerToUpdate.icon = newResource;
+          _addMarkers([markerToUpdate], theMap);
+          resolve();
+        } else {
+          reject(`Marker with id[${markerId}] not found`);
+        }
+      } catch (ex) {
+        console.log(`Error in mapbox.updateMarkerResource: ${ex}`);
+        reject(ex);
+      }
+    });
+  }
+
   setCenter(options: SetCenterOptions, nativeMap?): Promise<any> {
     return new Promise((resolve, reject) => {
       try {
